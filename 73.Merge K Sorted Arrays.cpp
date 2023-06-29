@@ -1,31 +1,36 @@
 #include <bits/stdc++.h>
-
+class three
+{
+public:
+    int data, idx, jdx;
+};
+struct comparator
+{
+    bool operator()(three a, three b)
+    {
+        return a.data > b.data;
+    }
+};
 vector<int> mergeKSortedArrays(vector<vector<int>> &kArrays, int k)
 {
-    priority_queue<int, vector<int>, greater<int>> pq;
+    priority_queue<three, vector<three>, comparator> pq;
+
     for (int i = 0; i < k; i++)
-
     {
-
-        int n = kArrays[i].size();
-
-        for (int j = 0; j < n; j++)
-
-        {
-
-            pq.push(kArrays[i][j]);
-        }
+        pq.push({kArrays[i][0], i, 0});
     }
-
     vector<int> ans;
-
     while (!pq.empty())
-
     {
-
-        ans.push_back(pq.top());
-
+        three obj = pq.top();
         pq.pop();
+        int val = obj.data, i = obj.idx, j = obj.jdx;
+
+        ans.push_back(val);
+        if (j + 1 < kArrays[i].size())
+        {
+            pq.push({kArrays[i][j + 1], i, j + 1});
+        }
     }
 
     return ans;
